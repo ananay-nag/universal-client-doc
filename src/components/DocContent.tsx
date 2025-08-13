@@ -1,4 +1,8 @@
 import type { IParameter } from "../types";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+// Choose a style from the available options, e.g., dracula, atom-one-dark, etc.
+// You might also need to import specific language definitions if using a subset
+// import { jsx } from 'react-syntax-highlighter/dist/esm/languages/hljs';
 
 type DocContentProps = {
   apiDoc: {
@@ -17,6 +21,9 @@ type DocContentProps = {
   onPrevious: () => void;
   hasNext: boolean;
   hasPrevious: boolean;
+  selectedLanguage: string;
+  currentCodeTheam: any
+
 };
 
 export default function DocContent({
@@ -25,6 +32,9 @@ export default function DocContent({
   onPrevious,
   hasNext,
   hasPrevious,
+  selectedLanguage,
+  currentCodeTheam
+  
 }: DocContentProps) {
   if (!apiDoc) {
     return (
@@ -35,10 +45,26 @@ export default function DocContent({
               Package Install
             </h3>
             <pre className="bg-gray-900 dark:bg-gray-800 text-green-300 rounded p-4 overflow-x-auto font-mono whitespace-pre-wrap hover:cursor-pointer">
-              <code onClick={() =>  navigator.clipboard.writeText('npm install @ananay-nag/universal-client')}>npm install @ananay-nag/universal-client</code>
+              <code
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    "npm install @ananay-nag/universal-client"
+                  )
+                }
+              >
+                npm install @ananay-nag/universal-client
+              </code>
               <br />
               <br />
-              <code onClick={() =>  navigator.clipboard.writeText('yarn add @ananay-nag/universal-client')}>yarn add @ananay-nag/universal-client</code>
+              <code
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    "yarn add @ananay-nag/universal-client"
+                  )
+                }
+              >
+                yarn add @ananay-nag/universal-client
+              </code>
               <br />
             </pre>
           </section>
@@ -121,9 +147,12 @@ export default function DocContent({
             <h3 className="text-xl font-semibold mb-2 text-gray-700 dark:text-gray-300">
               Code Example
             </h3>
-            <pre className="bg-gray-900 dark:bg-gray-800 text-green-300 rounded p-4 overflow-x-auto font-mono whitespace-pre-wrap">
+            <SyntaxHighlighter language={selectedLanguage} style={currentCodeTheam}>
+              {codeExample}
+            </SyntaxHighlighter>
+            {/* <pre className="bg-gray-900 dark:bg-gray-800 text-green-300 rounded p-4 overflow-x-auto font-mono whitespace-pre-wrap">
               <code>{codeExample}</code>
-            </pre>
+            </pre> */}
           </section>
         )}
       </div>

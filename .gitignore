@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+lerna-debug.log
+.pnpm-debug.log
+.pnpmfile.cjs
+.pnpmfile.js
+.pnpmfile.mjs
