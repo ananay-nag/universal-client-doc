@@ -6,7 +6,6 @@ export default function DarkModeToggle() {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     // Check local storage first
     const theme = localStorage.getItem('theme');
-    console.log('Current theme:', theme);
     if (theme === 'dark') {
       return true;
     }
