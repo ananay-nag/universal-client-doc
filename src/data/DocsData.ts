@@ -78,7 +78,7 @@ const client = new UniversalClient(config);`.trim(),
                     },
                     {
                       name: "options",
-                      type: "UniversalClientCallOptions",
+                      type: "any",
                       description: [
                         "Optional call options, such as timeout or additional headers.",
                       ],
@@ -122,7 +122,7 @@ const client = new UniversalClient(config);`.trim(),
                 },
                 {
                   name: "options",
-                  type: "UniversalClientCallOptions",
+                  type: "any",
                   description: [
                     "Optional call options, such as timeout or additional headers.",
                   ],
@@ -282,7 +282,7 @@ app.listen(PORT, () => {
                     },
                     {
                       name: "options",
-                      type: "UniversalClientCallOptions",
+                      type: "any",
                       description: [
                         "Optional call options, such as timeout or additional headers.",
                       ],
