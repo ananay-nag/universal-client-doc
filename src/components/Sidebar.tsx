@@ -189,7 +189,7 @@ export default function Sidebar({ apis, selectedId, onSelect }: SidebarProps) {
             </button>
             {exampleOpen && (
               <div className="pl-4 py-2 space-y-1">
-                {filtered.examples.map((ex : any) => (
+                {filtered.examples.map((ex: any) => (
                   <div
                     key={ex.exampleId}
                     onClick={() => onSelect(ex.exampleId)}
