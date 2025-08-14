@@ -1,8 +1,8 @@
-interface LanguageSelectorProps {
+type LanguageSelectorProps = {
   languages: string[];
   selectedLanguage: string | null;
-  onSelect: (language: string) => void;
-}
+  onSelect: (lang: string) => void;
+};
 
 export default function LanguageSelector({
   languages,
@@ -11,18 +11,18 @@ export default function LanguageSelector({
 }: LanguageSelectorProps) {
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto justify-items-center">
-      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100 text-center">
         Select Language
       </h2>
-      <div className="flex flex-wrap gap-4 justify-center">
+      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-4 justify-center">
         {languages.map((lang) => (
           <button
             key={lang}
             onClick={() => onSelect(lang)}
-            className={`px-4 py-2 rounded-lg font-medium border-2 transition-colors ${
+            className={`px-3 sm:px-4 py-2 rounded-lg font-medium border-2 transition-colors text-sm sm:text-base ${
               selectedLanguage === lang
                 ? "border-indigo-600 bg-indigo-600 text-white"
-                : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-white-800 dark:text-gray-200 hover:bg-indigo-900 dark:hover:bg-indigo-900"
+                : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-indigo-900 dark:hover:bg-indigo-900"
             }`}
             aria-pressed={selectedLanguage === lang}
           >
@@ -30,13 +30,14 @@ export default function LanguageSelector({
           </button>
         ))}
       </div>
-      <br />
-      <div className="grid sx:grid-cols-3 gap-6 mb-12 w-full max-w-5xl justify-items-center">
-        <section className="mb-6">
-          <h3 className="text-xl font-semibold mb-2 text-gray-700 dark:text-gray-300 text-center">
+
+      {/* Package Install Section */}
+      <div className="grid sm:grid-cols-3 gap-6 my-8 w-full max-w-5xl justify-items-center">
+        <section className="mb-6 sm:col-span-2">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-700 dark:text-gray-300 text-center">
             Package Install
           </h3>
-          <pre className="bg-gray-900 dark:bg-gray-800 text-green-300 rounded p-4 overflow-x-auto font-mono whitespace-pre-wrap hover:cursor-pointer">
+          <pre className="bg-gray-900 dark:bg-gray-800 text-green-300 rounded p-4 overflow-x-auto font-mono whitespace-pre hover:cursor-pointer text-sm">
             <code
               onClick={() =>
                 navigator.clipboard.writeText(
@@ -46,8 +47,7 @@ export default function LanguageSelector({
             >
               npm install @ananay-nag/universal-client
             </code>
-            <br />
-            <br />
+            {"\n\n"}
             <code
               onClick={() =>
                 navigator.clipboard.writeText(
@@ -57,7 +57,6 @@ export default function LanguageSelector({
             >
               yarn add @ananay-nag/universal-client
             </code>
-            <br />
           </pre>
         </section>
       </div>

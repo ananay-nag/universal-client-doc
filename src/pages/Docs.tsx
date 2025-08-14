@@ -1,3 +1,4 @@
+// Docs.tsx (updated responsive layout)
 import { useState, useEffect, useMemo } from "react";
 import { docsDatas } from "../data/DocsData";
 import LanguageSelector from "../components/LanguageSelector";
@@ -5,18 +6,19 @@ import VersionSelector from "../components/VersionSelector";
 import Sidebar from "../components/Sidebar";
 import DocContent from "../components/DocContent";
 import type { IAPIDocumentation, ILanguageData, IVersionData } from "../types";
-import {dracula, vs } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-
+import { dracula, vs } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { Menu, X } from "lucide-react";
 
 export default function Docs() {
-  // available languages
   const languageOptions = docsDatas.map((d) => d.language);
-
-  let currentCodeTheam = localStorage.getItem('theme') === 'dark' ? dracula : vs;
+  let currentCodeTheam =
+    localStorage.getItem("theme") === "dark" ? dracula : vs;
 
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [selectedVersion, setSelectedVersion] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const languageData: ILanguageData | undefined = selectedLanguage
     ? docsDatas.find((d) => d.language === selectedLanguage)
     : undefined;
@@ -42,17 +44,11 @@ export default function Docs() {
       ? languageData.versions.find((v) => v.version === selectedVersion)
       : undefined;
 
-  /** -------------------------
-   * Build flattened API items (for navigation)
-   * ------------------------- */
   const apiGroup: IAPIDocumentation | undefined = versionData?.apis;
 
   const apiItems = useMemo(() => {
     if (!apiGroup) return [];
-
     const items: any[] = [];
-
-    // Classes
     apiGroup.claasNames?.forEach((cls) => {
       items.push({
         id: cls.classId,
@@ -61,8 +57,6 @@ export default function Docs() {
         description: cls.description,
         codeExample: cls.example,
       });
-
-      // Constructor(s)
       cls.constructor?.forEach((ctor) => {
         items.push({
           id: ctor.constructorId,
@@ -72,8 +66,6 @@ export default function Docs() {
           ...ctor,
         });
       });
-
-      // Methods in class
       cls.methods?.forEach((method) => {
         items.push({
           id: method.methodId,
@@ -83,8 +75,6 @@ export default function Docs() {
         });
       });
     });
-
-    // Global methods
     apiGroup.methods?.forEach((method) => {
       items.push({
         id: method.methodId,
@@ -93,7 +83,6 @@ export default function Docs() {
         ...method,
       });
     });
-
     apiGroup.examples?.forEach((ex) => {
       items.push({
         id: ex.exampleId,
@@ -102,21 +91,16 @@ export default function Docs() {
         ...ex,
       });
     });
-
     return items;
   }, [apiGroup]);
 
-  // Reset selected if version changes
   useEffect(() => {
     setSelectedItemId(null);
   }, [selectedVersion, currentCodeTheam]);
 
-  let currentIndex = apiItems.findIndex((item) => item.id === selectedItemId) ;
- 
+  let currentIndex = apiItems.findIndex((item) => item.id === selectedItemId);
   currentIndex = currentIndex < 0 ? 0 : currentIndex;
-  
   const selectedItem = currentIndex !== -1 ? apiItems[currentIndex] : null;
-  
 
   function goPrevious() {
     if (currentIndex > 0) {
@@ -141,7 +125,15 @@ export default function Docs() {
         </div>
       ) : (
         <>
-          <div className="flex flex-col p-4 bg-white dark:bg-gray-900 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 md:w-72">
+          {/* Mobile menu toggle */}
+          <div className="md:hidden flex items-center justify-between p-2 border-b border-gray-300 dark:border-gray-700">
+            <button
+              className="flex items-center px-3 py-2 text-sm font-medium bg-indigo-600 text-white rounded-md"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? <X className="w-5 h-5 mr-1" /> : <Menu className="w-5 h-5 mr-1" />}
+              API's
+            </button>
             {versionOptions.length > 0 && selectedVersion && (
               <VersionSelector
                 versions={versionOptions}
@@ -149,16 +141,36 @@ export default function Docs() {
                 onSelect={setSelectedVersion}
               />
             )}
-            {/* Pass full apiGroup to Sidebar */}
+          </div>
+
+          {/* Sidebar */}
+          <div
+            className={`${
+              sidebarOpen ? "block" : "hidden"
+            } md:block md:w-72 flex-shrink-0 overflow-y-auto bg-white dark:bg-gray-900 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700`}
+          >
+            {versionOptions.length > 0 && selectedVersion && (
+              <div className="hidden md:block p-4">
+                <VersionSelector
+                  versions={versionOptions}
+                  selectedVersion={selectedVersion}
+                  onSelect={setSelectedVersion}
+                />
+              </div>
+            )}
             {apiGroup && (
               <Sidebar
                 apis={apiGroup}
                 selectedId={selectedItemId}
-                onSelect={setSelectedItemId}
+                onSelect={(id) => {
+                  setSelectedItemId(id);
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
             )}
           </div>
 
+          {/* Content */}
           <div className="flex-grow flex flex-col overflow-hidden p-4">
             <DocContent
               apiDoc={selectedItem}

@@ -185,41 +185,41 @@ export default function DocContent({
     </main>
   );
 }
-
-/** Parameters/Properties table */
 function ParameterTable({ items }: { items: IParameter[] }) {
   return (
-    <table className="w-full table-auto border-collapse ">
-      <thead>
-        <tr>
-          <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
-            Name
-          </th>
-          <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
-            Type
-          </th>
-          <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
-            Description
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item) => (
-          <tr key={item.name}>
-            <td className="border-b border-gray-200 dark:border-gray-700 p-2 text-indigo-700 dark:text-white">
-              {item.name}
-            </td>
-            <td className="border-b border-gray-200 dark:border-gray-700 p-2 font-mono text-indigo-700 dark:text-white">
-              {item.type}
-            </td>
-            <td className="border-b border-gray-200 dark:border-gray-700 p-2 text-indigo-700 dark:text-white">
-              {Array.isArray(item.description)
-                ? item.description.join(" ")
-                : item.description}
-            </td>
+    <div className="overflow-x-auto">
+      <table className="min-w-full table-auto border-collapse text-sm sm:text-base">
+        <thead>
+          <tr>
+            <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
+              Name
+            </th>
+            <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
+              Type
+            </th>
+            <th className="border-b border-gray-300 dark:border-gray-700 p-2 text-left text-gray-700 dark:text-gray-300">
+              Description
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <tr key={item.name}>
+              <td className="border-b border-gray-200 dark:border-gray-700 p-2 text-indigo-700 dark:text-white">
+                {item.name}
+              </td>
+              <td className="border-b border-gray-200 dark:border-gray-700 p-2 font-mono text-indigo-700 dark:text-white">
+                {item.type}
+              </td>
+              <td className="border-b border-gray-200 dark:border-gray-700 p-2 text-indigo-700 dark:text-white">
+                {Array.isArray(item.description)
+                  ? item.description.join(" ")
+                  : item.description}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
